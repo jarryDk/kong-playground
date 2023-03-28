@@ -1,0 +1,17 @@
+= Kong
+
+
+== Get Kong 
+
+[source,bash]
+----
+curl -Ls https://get.konghq.com/quickstart | bash
+----
+
+Source: https://docs.konghq.com/gateway/3.2.x/get-started/
+
+== Links
+
+- https://konghq.com/install[Install Kong Gateway]
+- https://docs.konghq.com/gateway/latest/install/docker[Install Kong Gateway on Docker]
+- https://docs.konghq.com/gateway/latest/install/linux/rhel[Install Kong Gateway on RHEL]
