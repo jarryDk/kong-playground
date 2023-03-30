@@ -1,11 +1,9 @@
 #!/bin/bash
-
-KONG_GATEWAY_VERSION=3.2.1.0
-
+source ./config.conf
 podman run -it \
   --rm=true \
   --privileged \
-  --name kong-dbless-no-license \
+  --name kong-gateway-dbless-no-license \
   --network=kong-net \
   -v "$(pwd):/kong/declarative/" \
   -e "KONG_DATABASE=off" \

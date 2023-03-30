@@ -1,0 +1,49 @@
+{
+    "created_at": 1422386534,
+    "name": "todo_upstream",
+    "algorithm": "round-robin",
+    "hash_on": "none",
+    "hash_fallback": "none",
+    "hash_on_cookie_path": "/",
+    "slots": 10000,
+    "healthchecks": {
+        "passive": {
+            "type": "http",
+            "healthy": {
+                "http_statuses": [200, 201, 202, 203, 204, 205, 206, 207, 208, 226, 300, 301, 302, 303, 304, 305, 306, 307, 308],
+                "successes": 0
+            },
+            "unhealthy": {
+                "http_statuses": [429, 500, 503],
+                "timeouts": 0,
+                "http_failures": 0,
+                "tcp_failures": 0
+            }
+        },
+        "active": {
+            "https_verify_certificate": false,
+            "healthy": {
+                "http_statuses": [200, 302],
+                "successes": 0,
+                "interval": 0
+            },
+            "unhealthy": {
+                "http_failures": 0,
+                "http_statuses": [429, 404, 500, 501, 502, 503, 504, 505],
+                "timeouts": 0,
+                "tcp_failures": 0,
+                "interval": 0
+            },
+            "type": "http",
+            "concurrency": 10,
+            "timeout": 1,
+            "http_path": "/health",
+            "https_sni": "todo.jarry.dk"
+        },
+        "threshold": 0
+    },
+    "tags": ["user-level", "low-priority"],
+    "host_header": "todo.jarry.dk",
+    "use_srv_name": false
+}
+

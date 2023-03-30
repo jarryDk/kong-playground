@@ -1,7 +1,10 @@
 = Kong
 
+- https://docs.konghq.com/gateway/latest/get-started/services-and-routes/
 
-== Get Kong 
+
+
+== Get Kong
 
 [source,bash]
 ----
@@ -9,6 +12,72 @@ curl -Ls https://get.konghq.com/quickstart | bash
 ----
 
 Source: https://docs.konghq.com/gateway/3.2.x/get-started/
+
+== Run Kong Gatway with podman
+
+.We need a network
+[source,bash]
+----
+podman network create kong-net
+----
+
+Script link:create_network.sh[create_network.sh]
+
+.Set variables
+[source,bash]
+----
+include::config.conf[]
+----
+Script: link:config.conf[config.conf]
+
+TIP: Do not change the value of `POSTGRES_KONG_DB` from `kong`.
+
+.We might need a database
+[source,bash]
+----
+include::start_postgres.sh[start_postgres.sh]
+----
+
+Script: link:start_postgres.sh[start_postgres.sh]
+
+.Prepare the Kong database
+[source,bash]
+----
+include::prepare_kong_gatway_postgres.sh[prepare_kong_gatway_postgres.sh]
+----
+
+Script: link:prepare_kong_gatway_postgres.sh[prepare_kong_gatway_postgres.sh]
+
+.Start Kong Gateway - use Postgres (no license)
+[source,bash]
+----
+include::start_kong_gatway_postgres_no_license.sh[]
+----
+
+Script: link:start_kong_gatway_postgres_no_license.sh[start_kong_gatway_postgres_no_license.sh]
+
+== API calls to Kong Gatway
+
+=== Admin API
+
+- https://docs.konghq.com/gateway/latest/admin-api/#service-object
+- https://docs.konghq.com/gateway/latest/admin-api/#route-object
+- https://docs.konghq.com/gateway/latest/admin-api/#upstream-object
+
+.Get Kong Gateway configuration
+[source,bash]
+----
+curl -s localhost:8001 | jq '.configuration'
+----
+
+.Verify that Kong Gateway is running
+[source,bash]
+----
+curl -i http://localhost:8001/services
+----
+
+==== Upstream Object
+
 
 == Links
 
