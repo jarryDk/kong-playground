@@ -1,0 +1,40 @@
+= Quarkus -> ToTo
+
+.Start in dev mode
+[source,bash]
+----
+mvn quarkus:dev
+----
+
+.Build jar
+[source,bash]
+----
+mvn clean package
+----
+
+.Build images
+[source,bash]
+----
+podman build \
+    -f src/main/docker/Dockerfile.jvm \
+    -t jarrydk/kong-quarkus-todo .
+----
+
+.Start container
+[source,bash]
+----
+podman run -it \
+    --rm=true \
+    -p 8080:8080 jarrydk/kong-quarkus-todo .
+----
+
+
+.Start container in kong-net network
+[source,bash]
+----
+podman run -it \
+    --rm=true \
+    --network=kong-net \
+    --name=kong-quarkus-todo \
+    -p 8080:8080 jarrydk/kong-quarkus-todo
+----

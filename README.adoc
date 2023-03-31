@@ -78,6 +78,23 @@ curl -i http://localhost:8001/services
 
 ==== Upstream Object
 
+== Quarkus ToDo
+
+A ToDo created with Quarkus using a h2 database.
+
+link::quarkus/todo-app[quarkus/todo-app]
+
+.Start a container in kong-net network based on quarkus/todo-app
+[source,bash]
+----
+podman run -it \
+    --rm=true \
+    --network=kong-net \
+    --name=kong-quarkus-todo \
+    -p 8080:8080 jarrydk/kong-quarkus-todo
+----
+
+
 
 == Links
 

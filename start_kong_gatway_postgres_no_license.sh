@@ -5,7 +5,6 @@ podman run -it \
     --rm \
     --name kong-gateway \
     --network=$POSTGRES_KONG_NETWORK \
-    -v "$(pwd):/kong/declarative/" \
     -e "KONG_DATABASE=postgres" \
     -e "KONG_PG_HOST=$POSTGRES_KONG_HOST" \
     -e "KONG_PG_USER=$POSTGRES_KONG_USER" \

@@ -5,7 +5,6 @@ podman run -it \
   --privileged \
   --name kong-gateway-dbless-no-license \
   --network=kong-net \
-  -v "$(pwd):/kong/declarative/" \
   -e "KONG_DATABASE=off" \
   -e "KONG_DECLARATIVE_CONFIG=/kong/declarative/kong.yml" \
   -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" \
