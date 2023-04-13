@@ -1,0 +1,31 @@
+= Spirng ToDo
+
+.Build jar
+[source,bash]
+----
+mvn clean package
+----
+
+.Build images
+[source,bash]
+----
+podman build \
+    -f src/main/docker/Dockerfile.jvm \
+    -t jarrydk/kong-spring-todo .
+----
+
+.Start container
+[source,bash]
+----
+podman run -it \
+    --rm=true \
+    --network=kong-net \
+    -e spring.datasource.url=jdbc:postgresql://postgres-spring-playground:5432/hibernate_db \
+    -p 8080:8080 jarrydk/kong-spring-todo .
+----
+
+
+
+== Links
+
+- https://spring.io/guides/topicals/spring-boot-docker/

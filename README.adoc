@@ -2,8 +2,6 @@
 
 - https://docs.konghq.com/gateway/latest/get-started/services-and-routes/
 
-
-
 == Get Kong
 
 [source,bash]
@@ -21,13 +19,21 @@ Source: https://docs.konghq.com/gateway/3.2.x/get-started/
 podman network create kong-net
 ----
 
-Script link:create_network.sh[create_network.sh]
+Script link:containers/create_network.sh[create_network.sh]
 
 .Set variables
 [source,bash]
 ----
-include::config.conf[]
+export PODMAN_KONG_NETWORK=kong-net
+
+export POSTGRES_KONG_USER=kong
+export POSTGRES_KONG_PASSWORD=playground
+export POSTGRES_KONG_DB=kong
+export POSTGRES_KONG_HOST=postgres-kong-playground
+
+export KONG_GATEWAY_VERSION=3.2.2.1
 ----
+
 Script: link:config.conf[config.conf]
 
 TIP: Do not change the value of `POSTGRES_KONG_DB` from `kong`.
@@ -35,26 +41,26 @@ TIP: Do not change the value of `POSTGRES_KONG_DB` from `kong`.
 .We might need a database
 [source,bash]
 ----
-include::start_postgres.sh[start_postgres.sh]
+include::containers/start_postgres_for_kong.sh[start_postgres.sh]
 ----
 
-Script: link:start_postgres.sh[start_postgres.sh]
+Script: link:containers/start_postgres_for_kong.sh[start_postgres_for_kong.sh]
 
 .Prepare the Kong database
 [source,bash]
 ----
-include::prepare_kong_gatway_postgres.sh[prepare_kong_gatway_postgres.sh]
+include::containers/prepare_postgres_for_kong_gatway.sh[prepare_postgres_for_kong_gatway.sh]
 ----
 
-Script: link:prepare_kong_gatway_postgres.sh[prepare_kong_gatway_postgres.sh]
+Script: link:containers/prepare_kong_gatway_postgres.sh[prepare_kong_gatway_postgres.sh]
 
 .Start Kong Gateway - use Postgres (no license)
 [source,bash]
 ----
-include::start_kong_gatway_postgres_no_license.sh[]
+include::containers/start_kong_gatway_postgres_no_license.sh[start_kong_gatway_postgres_no_license.sh]
 ----
 
-Script: link:start_kong_gatway_postgres_no_license.sh[start_kong_gatway_postgres_no_license.sh]
+Script: link:containers/start_kong_gatway_postgres_no_license.sh[start_kong_gatway_postgres_no_license.sh]
 
 == API calls to Kong Gatway
 
@@ -80,9 +86,9 @@ curl -i http://localhost:8001/services
 
 == Quarkus ToDo
 
-A ToDo created with Quarkus using a h2 database.
+A ToDo created with Quarkus using a Postgres database.
 
-link::quarkus/todo-app[quarkus/todo-app]
+link::quarkus/quarkus-todo-app[quarkus/quarkus-todo-app]
 
 .Start a container in kong-net network based on quarkus/todo-app
 [source,bash]
@@ -91,13 +97,33 @@ podman run -it \
     --rm=true \
     --network=kong-net \
     --name=kong-quarkus-todo \
-    -p 8080:8080 jarrydk/kong-quarkus-todo
+    -p 8180:8080 jarrydk/kong-quarkus-todo
 ----
 
+== Spring ToDo
 
+A ToDo created with Spring using a Postgres database.
+
+link::spring/spring-todo-app[spring/spring-todo-app]
+
+.Start container
+[source,bash]
+----
+podman run -it \
+    --rm=true \
+    --network=kong-net \
+    --name=kong-spring-todo \
+    -e spring.datasource.url=jdbc:postgresql://postgres-spring-playground:5432/hibernate_db \
+    -p 8280:8080 jarrydk/kong-spring-todo
+----
 
 == Links
 
 - https://konghq.com/install[Install Kong Gateway]
 - https://docs.konghq.com/gateway/latest/install/docker[Install Kong Gateway on Docker]
 - https://docs.konghq.com/gateway/latest/install/linux/rhel[Install Kong Gateway on RHEL]
+
+- https://konghq.com/blog/engineering/mutual-tls-api-gateway
+- https://support.konghq.com/support/s/article/How-to-setup-Kong-to-serve-an-SSL-certificate-for-API-requests
+- https://support.konghq.com/support/s/article/How-to-define-SSL-Certificates-and-where-you-can-use-them
+- https://dev.to/rehmatworks/protecting-kong-api-gateway-using-let-s-encrypt-1id6
