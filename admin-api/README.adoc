@@ -9,6 +9,12 @@
     * https://docs.konghq.com/gateway/latest/admin-api/#ca-certificate-object[CA Certificate Object]
     * https://docs.konghq.com/gateway/latest/admin-api/#upstream-object[Upstream Object]
 
+== ACME plugin
+
+- https://docs.konghq.com/hub/kong-inc/acme/
+- https://tech.aufomm.com/how-to-use-kong-acme-plugin/
+- https://github.com/Kong/kong/tree/master/kong/plugins/acme
+
 == ToDo service (without cert - path todos)
 
 .create_todo_service.sh
