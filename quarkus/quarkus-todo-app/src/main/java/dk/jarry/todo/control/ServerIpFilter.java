@@ -30,6 +30,8 @@ public class ServerIpFilter implements ContainerResponseFilter {
 		String remoteIp = request.remoteAddress().host();
 		responseContext.getHeaders().add("X-remote-ip", remoteIp);
 
+		responseContext.getHeaders().add("X-backend", "Quarkus");
+
 		LOG.info("X-server-ip: " + serverIp);
 		LOG.info("X-remote-ip: " + remoteIp);
 

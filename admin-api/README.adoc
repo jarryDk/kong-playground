@@ -1,6 +1,15 @@
 = Kong -> admin-api
 
-== ToDo service
+- https://docs.konghq.com/gateway/latest/admin-api/[Admin API]
+    * https://docs.konghq.com/gateway/latest/admin-api/#tags[Tags]
+    * https://docs.konghq.com/gateway/latest/admin-api/#service-object[Service Object]
+    * https://docs.konghq.com/gateway/latest/admin-api/#route-object[Route Object]
+    * https://docs.konghq.com/gateway/latest/admin-api/#consumer-object[Consumer Object]
+    * https://docs.konghq.com/gateway/latest/admin-api/#certificate-object[Certificate Object]
+    * https://docs.konghq.com/gateway/latest/admin-api/#ca-certificate-object[CA Certificate Object]
+    * https://docs.konghq.com/gateway/latest/admin-api/#upstream-object[Upstream Object]
+
+== ToDo service (without cert - path todos)
 
 .create_todo_service.sh
 [source,bash]
@@ -29,7 +38,7 @@ curl -i -s \
     "name": "todo_service",
     "host": "todo.jarry.dk",
     "tls_verify": null,
-    "path": null,
+    "path": "/todos",
     "tls_verify_depth": null,
 }
 ----
@@ -121,14 +130,12 @@ curl -i -s \
 [source,bash]
 ----
 #!/bin/bash
-
-curl -i -s \
-    -X POST http://localhost:8001/upstreams/todo_upstream/targets \
-    --data target='mockbin.org:80'
-
-curl -i -s \
-    -X POST http://localhost:8001/upstreams/todo_upstream/targets \
-    --data target='kong-quarkus-todo:8080'
+#curl -X POST http://localhost:8001/upstreams/todo_upstream/targets \
+#  --data target='mockbin.org:80'
+curl -X POST http://localhost:8001/upstreams/todo_upstream/targets \
+  --data target='kong-quarkus-todo:8080'
+curl -X POST http://localhost:8001/upstreams/todo_upstream/targets \
+  --data target='kong-spring-todo:8080'
 ----
 
-TIP: `kong-quarkus-todo` is the name of the container in the `kong-net` network.
+TIP: `kong-quarkus-todo` and `kong-spring-todo` is the name of the container in the `kong-net` network.

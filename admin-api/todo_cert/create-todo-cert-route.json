@@ -1,0 +1,29 @@
+{
+    "id": "30755a52-97ba-4246-b9db-1b304d516993",
+    "request_buffering": true,
+    "response_buffering": true,
+    "protocols": [
+        "http",
+        "https"
+    ],
+    "https_redirect_status_code": 426,
+    "preserve_host": false,
+    "strip_path": true,
+    "name": "todo_cert_route",
+    "service": {
+        "id": "4792a766-7d1f-449c-aab2-d118006fa044",
+        "name": "todo_cert_service"
+    },
+    "paths": [
+        "/"
+    ],
+    "hosts": [
+        "update.jarry.dk"
+    ],
+    "created_at": 1681460535,
+    "regex_priority": 0,
+    "snis": [
+        "update.jarry.dk"
+    ],
+    "path_handling": "v0"
+}
