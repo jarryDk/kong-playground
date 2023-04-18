@@ -6,4 +6,4 @@ podman run -it \
     -e "KONG_DATABASE=postgres" \
     -e "KONG_PG_HOST=$POSTGRES_KONG_HOST" \
     -e "KONG_PG_PASSWORD=$POSTGRES_KONG_PASSWORD" \
-    kong/kong-gateway:$KONG_GATEWAY_VERSION kong migrations bootstrap
+    kong:$KONG_GATEWAY_OSS_VERSION kong migrations bootstrap

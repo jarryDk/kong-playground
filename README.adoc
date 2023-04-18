@@ -1,25 +1,20 @@
 = Kong
 
-- https://docs.konghq.com/gateway/latest/get-started/services-and-routes/
+- https://docs.konghq.com/gateway/latest/get-started/[Kong Gateway -> Get Started]
 
-== Get Kong
-
+.Get Kong for the Quick start
 [source,bash]
 ----
 curl -Ls https://get.konghq.com/quickstart | bash
 ----
-
 Source: https://docs.konghq.com/gateway/3.2.x/get-started/
 
 == Run Kong Gatway with podman
 
-.We need a network
-[source,bash]
-----
-podman network create kong-net
-----
+In the section https://podman.io/[Podman] is used to spin up the containers.
 
-Script link:containers/create_network.sh[create_network.sh]
+- https://docs.konghq.com/gateway/latest/install/docker/[Install Kong Gateway on Docker ]
+
 
 .Set variables
 [source,bash]
@@ -31,22 +26,30 @@ export POSTGRES_KONG_PASSWORD=playground
 export POSTGRES_KONG_DB=kong
 export POSTGRES_KONG_HOST=postgres-kong-playground
 
-export KONG_GATEWAY_VERSION=3.2.2.1
+export KONG_GATEWAY_OSS_VERSION=3.2.2
 ----
 
 Script: link:config.conf[config.conf]
 
 TIP: Do not change the value of `POSTGRES_KONG_DB` from `kong`.
 
-.We might need a database
+.We need a network
 [source,bash]
 ----
-include::containers/start_postgres_for_kong.sh[start_postgres.sh]
+podman network create kong-net
+----
+
+Script link:containers/create_network.sh[create_network.sh]
+
+.Start Postgres database
+[source,bash]
+----
+include::containers/start_postgres_for_kong.sh[start_postgres_for_kong.sh]
 ----
 
 Script: link:containers/start_postgres_for_kong.sh[start_postgres_for_kong.sh]
 
-.Prepare the Kong database
+.Prepare the Kong Gateway OSS Postgres database
 [source,bash]
 ----
 include::containers/prepare_postgres_for_kong_gatway.sh[prepare_postgres_for_kong_gatway.sh]
@@ -54,35 +57,17 @@ include::containers/prepare_postgres_for_kong_gatway.sh[prepare_postgres_for_kon
 
 Script: link:containers/prepare_kong_gatway_postgres.sh[prepare_kong_gatway_postgres.sh]
 
-.Start Kong Gateway - use Postgres (no license)
+.Start Kong Gatway OSS with Postgres
 [source,bash]
 ----
-include::containers/start_kong_gatway_postgres_no_license.sh[start_kong_gatway_postgres_no_license.sh]
+include::containers/start_kong_gatway_oss_with_postgres.sh[start_kong_gatway_oss_with_postgres.sh]
 ----
 
-Script: link:containers/start_kong_gatway_postgres_no_license.sh[start_kong_gatway_postgres_no_license.sh]
+Script: link:containers/start_kong_gatway_oss_with_postgres.sh[start_kong_gatway_oss_with_postgres.sh]
 
 == API calls to Kong Gatway
 
-=== Admin API
-
-- https://docs.konghq.com/gateway/latest/admin-api/#service-object
-- https://docs.konghq.com/gateway/latest/admin-api/#route-object
-- https://docs.konghq.com/gateway/latest/admin-api/#upstream-object
-
-.Get Kong Gateway configuration
-[source,bash]
-----
-curl -s localhost:8001 | jq '.configuration'
-----
-
-.Verify that Kong Gateway is running
-[source,bash]
-----
-curl -i http://localhost:8001/services
-----
-
-==== Upstream Object
+Subfolder for use of admin-api to update Kong Gatway link:admin-api[admin-api].
 
 == Quarkus ToDo
 
@@ -127,3 +112,9 @@ podman run -it \
 - https://support.konghq.com/support/s/article/How-to-setup-Kong-to-serve-an-SSL-certificate-for-API-requests
 - https://support.konghq.com/support/s/article/How-to-define-SSL-Certificates-and-where-you-can-use-them
 - https://dev.to/rehmatworks/protecting-kong-api-gateway-using-let-s-encrypt-1id6
+
+=== Admin API
+
+- https://docs.konghq.com/gateway/latest/admin-api/#service-object
+- https://docs.konghq.com/gateway/latest/admin-api/#route-object
+- https://docs.konghq.com/gateway/latest/admin-api/#upstream-object

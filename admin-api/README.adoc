@@ -1,19 +1,18 @@
 = Kong -> admin-api
 
-- https://docs.konghq.com/gateway/latest/admin-api/[Admin API]
-    * https://docs.konghq.com/gateway/latest/admin-api/#tags[Tags]
-    * https://docs.konghq.com/gateway/latest/admin-api/#service-object[Service Object]
-    * https://docs.konghq.com/gateway/latest/admin-api/#route-object[Route Object]
-    * https://docs.konghq.com/gateway/latest/admin-api/#consumer-object[Consumer Object]
-    * https://docs.konghq.com/gateway/latest/admin-api/#certificate-object[Certificate Object]
-    * https://docs.konghq.com/gateway/latest/admin-api/#ca-certificate-object[CA Certificate Object]
-    * https://docs.konghq.com/gateway/latest/admin-api/#upstream-object[Upstream Object]
+== Get stat of Kong Gateway
 
-== ACME plugin
+.Get Kong Gateway configuration
+[source,bash]
+----
+curl -s localhost:8001 | jq '.configuration'
+----
 
-- https://docs.konghq.com/hub/kong-inc/acme/
-- https://tech.aufomm.com/how-to-use-kong-acme-plugin/
-- https://github.com/Kong/kong/tree/master/kong/plugins/acme
+.Verify that Kong Gateway is running
+[source,bash]
+----
+curl -i http://localhost:8001/services
+----
 
 == ToDo service (without cert - path todos)
 
@@ -74,7 +73,6 @@ curl -i -s \
 [source,json]
 ----
 {
-    "created_at": 1422386534,
     "name": "todo_upstream",
     "algorithm": "round-robin",
     "hash_on": "none",
@@ -145,3 +143,20 @@ curl -X POST http://localhost:8001/upstreams/todo_upstream/targets \
 ----
 
 TIP: `kong-quarkus-todo` and `kong-spring-todo` is the name of the container in the `kong-net` network.
+
+== Links
+
+- https://docs.konghq.com/gateway/latest/admin-api/[Admin API]
+    * https://docs.konghq.com/gateway/latest/admin-api/#tags[Tags]
+    * https://docs.konghq.com/gateway/latest/admin-api/#service-object[Service Object]
+    * https://docs.konghq.com/gateway/latest/admin-api/#route-object[Route Object]
+    * https://docs.konghq.com/gateway/latest/admin-api/#consumer-object[Consumer Object]
+    * https://docs.konghq.com/gateway/latest/admin-api/#certificate-object[Certificate Object]
+    * https://docs.konghq.com/gateway/latest/admin-api/#ca-certificate-object[CA Certificate Object]
+    * https://docs.konghq.com/gateway/latest/admin-api/#upstream-object[Upstream Object]
+
+=== ACME plugin
+
+- https://docs.konghq.com/hub/kong-inc/acme/
+- https://tech.aufomm.com/how-to-use-kong-acme-plugin/
+- https://github.com/Kong/kong/tree/master/kong/plugins/acme
