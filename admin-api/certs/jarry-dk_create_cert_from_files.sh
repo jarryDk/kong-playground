@@ -13,6 +13,11 @@ fi
 FULLCHAIN_PEM_PATH=$ROOT_FOLDER/$DNS/fullchain.pem
 PRIVKEY_PEM_PATH=$ROOT_FOLDER/$DNS/privkey.pem
 
+echo "FULLCHAIN_PEM_PATH : $FULLCHAIN_PEM_PATH"
+echo "PRIVKEY_PEM_PATH : $PRIVKEY_PEM_PATH"
+
+echo "Will ask for user password - only sudo have access to certs"
+
 sudo curl -X POST \
     http://localhost:8001/certificates \
     -H 'Content-Type: multipart/form-data' \
