@@ -16,7 +16,7 @@ In the section https://podman.io/[Podman] is used to spin up the containers.
 - https://docs.konghq.com/gateway/latest/install/docker/[Install Kong Gateway on Docker ]
 
 
-.Set variables
+.Set variables (config.conf)
 [source,bash]
 ----
 export PODMAN_KONG_NETWORK=kong-net
@@ -36,7 +36,8 @@ TIP: Do not change the value of `POSTGRES_KONG_DB` from `kong`.
 .We need a network
 [source,bash]
 ----
-podman network create kong-net
+source ./config.conf
+podman network create $PODMAN_KONG_NETWORK
 ----
 
 Script link:containers/create_network.sh[create_network.sh]
@@ -44,7 +45,16 @@ Script link:containers/create_network.sh[create_network.sh]
 .Start Postgres database
 [source,bash]
 ----
-include::containers/start_postgres_for_kong.sh[start_postgres_for_kong.sh]
+source ./config.conf
+podman run -it \
+    --rm=true \
+    --name $POSTGRES_KONG_HOST \
+    --network=$PODMAN_KONG_NETWORK \
+    -e POSTGRES_USER=$POSTGRES_KONG_USER \
+    -e POSTGRES_PASSWORD=$POSTGRES_KONG_PASSWORD \
+    -e POSTGRES_DB=$POSTGRES_KONG_DB \
+    -p 5442:5432 \
+    postgres:15
 ----
 
 Script: link:containers/start_postgres_for_kong.sh[start_postgres_for_kong.sh]
@@ -52,7 +62,14 @@ Script: link:containers/start_postgres_for_kong.sh[start_postgres_for_kong.sh]
 .Prepare the Kong Gateway OSS Postgres database
 [source,bash]
 ----
-include::containers/prepare_postgres_for_kong_gatway.sh[prepare_postgres_for_kong_gatway.sh]
+source ./config.conf
+podman run -it \
+    --rm \
+    --network=$PODMAN_KONG_NETWORK \
+    -e "KONG_DATABASE=postgres" \
+    -e "KONG_PG_HOST=$POSTGRES_KONG_HOST" \
+    -e "KONG_PG_PASSWORD=$POSTGRES_KONG_PASSWORD" \
+    kong:$KONG_GATEWAY_OSS_VERSION kong migrations bootstrap
 ----
 
 Script: link:containers/prepare_kong_gatway_postgres.sh[prepare_kong_gatway_postgres.sh]
@@ -60,10 +77,47 @@ Script: link:containers/prepare_kong_gatway_postgres.sh[prepare_kong_gatway_post
 .Start Kong Gatway OSS with Postgres
 [source,bash]
 ----
-include::containers/start_kong_gatway_oss_with_postgres.sh[start_kong_gatway_oss_with_postgres.sh]
+source ./config.conf
+podman run -it \
+    --rm \
+    --name kong-gateway-oss \
+    --network=$PODMAN_KONG_NETWORK \
+    -e "KONG_DATABASE=postgres" \
+    -e "KONG_PG_HOST=$POSTGRES_KONG_HOST" \
+    -e "KONG_PG_USER=$POSTGRES_KONG_USER" \
+    -e "KONG_PG_PASSWORD=$POSTGRES_KONG_PASSWORD" \
+    -e "KONG_PROXY_ACCESS_LOG=/dev/stdout" \
+    -e "KONG_ADMIN_ACCESS_LOG=/dev/stdout" \
+    -e "KONG_PROXY_ERROR_LOG=/dev/stderr" \
+    -e "KONG_ADMIN_ERROR_LOG=/dev/stderr" \
+    -e "KONG_ADMIN_LISTEN=0.0.0.0:8001" \
+    -e "KONG_ADMIN_GUI_URL=http://localhost:8002, 0.0.0.0:8444 ssl" \
+    -p 8000:8000 \
+    -p 8443:8443 \
+    -p 127.0.0.1:8001:8001 \
+    -p 127.0.0.1:8444:8444 \
+    kong:$KONG_GATEWAY_OSS_VERSION
 ----
 
 Script: link:containers/start_kong_gatway_oss_with_postgres.sh[start_kong_gatway_oss_with_postgres.sh]
+
+As Kong Gatway OSS is missing a GUI we go with https://pantsel.github.io/konga/[Konga]. Konga was last released on May 16, 2020 (v0.14.9)
+
+.Start Konga
+[source,bash]
+----
+source ./config.conf
+podman run -it \
+    --rm \
+    --name konga \
+    --network=$PODMAN_KONG_NETWORK \
+    -e "TOKEN_SECRET=SuperSecret" \
+    -p 1337:1337 \
+    pantsel/konga
+----
+
+Script: link:containers/start_pansel_konga.sh[start_pansel_konga.sh]
+
 
 == API calls to Kong Gatway
 
