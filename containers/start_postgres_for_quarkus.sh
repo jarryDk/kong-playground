@@ -1,6 +1,12 @@
 #!/bin/bash
+
 source ./config.conf
-podman run -it \
+
+printf "\033[32m-----------------------------------------------------\033[39m\n"
+printf "\033[32mPostgreSQL will be listing on port 5452 on the host  \033[39m\n"
+printf "\033[32m-----------------------------------------------------\033[39m\n"
+
+podman run -dt \
     --rm=true \
     --name $POSTGRES_QUARKUS_HOST \
     --network=$PODMAN_KONG_NETWORK \

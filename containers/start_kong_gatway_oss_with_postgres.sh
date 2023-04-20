@@ -1,6 +1,6 @@
 #!/bin/bash
 source ./config.conf
-podman run -it \
+podman run -dt \
     --rm \
     --name kong-gateway-oss \
     --network=$PODMAN_KONG_NETWORK \
