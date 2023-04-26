@@ -1,5 +1,7 @@
 #!/bin/bash
+
 source ./config.conf
+
 podman run -it \
     --rm \
     --network=$PODMAN_KONG_NETWORK \

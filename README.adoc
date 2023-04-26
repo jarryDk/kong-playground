@@ -156,6 +156,29 @@ podman run -it \
     -p 8280:8080 jarrydk/kong-spring-todo
 ----
 
+== Create user and password in Postgres
+
+[source,bash]
+----
+CREATE USER quarkus_todo_dev WITH PASSWORD 'playground';
+CREATE DATABASE quarkus_todo_dev OWNER quarkus_todo_dev;
+----
+
+[source,bash]
+----
+CREATE USER spring_todo_dev WITH PASSWORD 'playground';
+CREATE DATABASE spring_todo_dev OWNER spring_todo_dev;
+----
+
+[source,bash]
+----
+CREATE USER todo_dev WITH PASSWORD 'playground';
+CREATE DATABASE todo_dev OWNER todo_dev;
+----
+
+
+
+
 == Links
 
 - https://konghq.com/install[Install Kong Gateway]

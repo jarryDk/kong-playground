@@ -24,6 +24,13 @@ podman run -it \
     -p 8080:8080 jarrydk/kong-spring-todo .
 ----
 
+== Create user and password in Postgres
+
+[source,bash]
+----
+CREATE USER spring_todo_dev WITH PASSWORD 'playground';
+CREATE DATABASE spring_todo_dev OWNER spring_todo_dev;
+----
 
 
 == Links

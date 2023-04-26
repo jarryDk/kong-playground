@@ -15,5 +15,3 @@ podman run -it \
 #    -e "NODE_ENV=production" \
 #    -e "TOKEN_SECRET={{somerandomstring}}" \
 #    pantsel/konga
-
-

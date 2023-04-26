@@ -1,11 +1,28 @@
 #!/bin/bash
 
-./create_todo_cert_service.sh
+curl -i -s \
+    -X POST http://localhost:8001/services \
+    -H "Content-Type: application/json" \
+    -d @create-todo-cert-service.json
 
-./create_todo_cert_route.sh
+curl -i -s \
+   -X POST http://localhost:8001/services/todo_cert_service/routes \
+   -H "Content-Type: application/json" \
+    -d @create-todo-cert-route.json
 
-./create_todo_cert_upstream.sh
+curl -i -s \
+    -X POST http://localhost:8001/upstreams \
+    -H "Content-Type: application/json" \
+    -d @create-todo-cert-upstream.json
 
-./update_todo_cert_service_to_use_todo_cert_upstream.sh
+curl -i -s \
+    -X PATCH http://localhost:8001/services/todo_cert_service \
+    --data host='todo_cert_upstream'
 
-./update_todo_cert_upstream_set_target.sh
+curl -i -s \
+    -X POST http://localhost:8001/upstreams/todo_cert_upstream/targets \
+    --data target='kong-quarkus-todo:8080'
+
+curl -i -s \
+    -X POST http://localhost:8001/upstreams/todo_cert_upstream/targets \
+    --data target='kong-spring-todo:8080'

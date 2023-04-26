@@ -1,8 +1,15 @@
 #!/bin/bash
+
 source ./config.conf
-podman run -it \
+
+podman run -d \
     --rm=true \
     --network=$PODMAN_KONG_NETWORK \
-    --name=kong-spring-todo \
-    -e spring.datasource.url=jdbc:postgresql://postgres-spring-playground:5432/hibernate_db \
-    -p 8280:8080 jarrydk/kong-spring-todo
+    --name=$TODO_SPRING_HOST \
+    -e spring.datasource.url=jdbc:postgresql://$POSTGRES_SPRING_HOST:$POSTGRES_SPRING_PORT/$POSTGRES_SPRING_DB \
+    -e spring.datasource.username=$POSTGRES_SPRING_USER \
+    -e spring.datasource.password=$POSTGRES_SPRING_PASSWORD \
+    -p $TODO_SPRING_PORT:8080 \
+    jarrydk/kong-spring-todo
+
+podman logs -f $TODO_SPRING_HOST

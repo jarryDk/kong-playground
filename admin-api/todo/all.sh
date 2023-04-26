@@ -1,11 +1,24 @@
 #!/bin/bash
 
-./create_todo_service.sh
+curl -i -s \
+    -X POST http://localhost:8001/services \
+    -H "Content-Type: application/json" \
+    -d @create-todo-service.json
 
-./create_todo_route.sh
+curl -i -s \
+    -X POST http://localhost:8001/services/todo_service/routes \
+    --data 'paths[]=/todos' \
+    --data name=todo_route
 
-./create_todo_upstream.sh
+curl -i -s \
+    -X POST http://localhost:8001/upstreams \
+    -H "Content-Type: application/json" \
+    -d @create-todo-upstream.json
 
-./update_todo_service_to_use_todo_upstream.sh
+curl -i -s \
+    -X POST http://localhost:8001/upstreams/todo_upstream/targets \
+    --data target='kong-quarkus-todo:8080'
 
-./update_todo_upstream_set_target.sh
+curl -i -s \
+    -X POST http://localhost:8001/upstreams/todo_upstream/targets \
+    --data target='kong-spring-todo:8080'

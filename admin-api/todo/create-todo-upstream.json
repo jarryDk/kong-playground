@@ -1,5 +1,4 @@
 {
-    "created_at": 1422386534,
     "name": "todo_upstream",
     "algorithm": "round-robin",
     "hash_on": "none",

@@ -11,7 +11,7 @@
     "client_certificate": null,
     "write_timeout": 60000,
     "name": "todo_service",
-    "host": "todo.jarry.dk",
+    "host": "todo_upstream",
     "tls_verify": null,
     "path":"/todos",
     "tls_verify_depth": null

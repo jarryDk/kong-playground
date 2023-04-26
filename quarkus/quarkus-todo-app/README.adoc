@@ -25,9 +25,9 @@ podman build \
 ----
 podman run -it \
     --rm=true \
+    --name=kong-quarkus-todo \
     -p 8080:8080 jarrydk/kong-quarkus-todo .
 ----
-
 
 .Start container in kong-net network
 [source,bash]
@@ -37,4 +37,12 @@ podman run -it \
     --network=kong-net \
     --name=kong-quarkus-todo \
     -p 8080:8080 jarrydk/kong-quarkus-todo
+----
+
+== Create user and password in Postgres
+
+[source,bash]
+----
+CREATE USER quarkus_todo_dev WITH PASSWORD 'playground';
+CREATE DATABASE quarkus_todo_dev OWNER quarkus_todo_dev;
 ----

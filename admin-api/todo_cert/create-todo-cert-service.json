@@ -13,6 +13,6 @@
     "name": "todo_cert_service",
     "host": "todo_cert_upstream",
     "tls_verify": null,
-    "path":"/todos",
+    "path":null,
     "tls_verify_depth": null
 }

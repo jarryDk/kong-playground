@@ -2,7 +2,7 @@
 source ./config.conf
 podman run -dt \
     --rm \
-    --name kong-gateway-oss \
+    --name $KONG_GATEWAY_OSS_HOST \
     --network=$PODMAN_KONG_NETWORK \
     -e "KONG_DATABASE=postgres" \
     -e "KONG_PG_HOST=$POSTGRES_KONG_HOST" \
@@ -12,9 +12,9 @@ podman run -dt \
     -e "KONG_ADMIN_ACCESS_LOG=/dev/stdout" \
     -e "KONG_PROXY_ERROR_LOG=/dev/stderr" \
     -e "KONG_ADMIN_ERROR_LOG=/dev/stderr" \
-    -e "KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl" \
-    -p 8000:8000 \
-    -p 8443:8443 \
-    -p 127.0.0.1:8001:8001 \
-    -p 127.0.0.1:8444:8444 \
+    -e "KONG_ADMIN_LISTEN=0.0.0.0:$KONG_GATEWAY_OSS_ADMIN_PORT, 0.0.0.0:$KONG_GATEWAY_OSS_ADMIN_TLS_PORT ssl" \
+    -p $KONG_GATEWAY_OSS_PORT:8000 \
+    -p $KONG_GATEWAY_OSS_TLS_PORT:8443 \
+    -p 127.0.0.1:$KONG_GATEWAY_OSS_ADMIN_PORT:8001 \
+    -p 127.0.0.1:$KONG_GATEWAY_OSS_ADMIN_TLS_PORT:8444 \
     kong:$KONG_GATEWAY_OSS_VERSION

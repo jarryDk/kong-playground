@@ -3,15 +3,13 @@
     "request_buffering": true,
     "response_buffering": true,
     "protocols": [
-        "http",
         "https"
     ],
-    "https_redirect_status_code": 426,
+    "https_redirect_status_code": 301,
     "preserve_host": false,
     "strip_path": true,
     "name": "todo_cert_route",
     "service": {
-        "id": "4792a766-7d1f-449c-aab2-d118006fa044",
         "name": "todo_cert_service"
     },
     "paths": [
