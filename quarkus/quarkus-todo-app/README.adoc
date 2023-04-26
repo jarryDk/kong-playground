@@ -46,3 +46,35 @@ podman run -it \
 CREATE USER quarkus_todo_dev WITH PASSWORD 'playground';
 CREATE DATABASE quarkus_todo_dev OWNER quarkus_todo_dev;
 ----
+
+
+== Keycloak
+
+[source,bash]
+----
+export access_token=$(\
+curl -X POST https://keycloak.jarry.dk:8443/realms/todos/protocol/openid-connect/token \
+    --user todo_client:3On4pvUD2hAQ4WlBCFzm7CXuj28w7KVJ \
+    -H 'content-type: application/x-www-form-urlencoded' \
+    -d 'username=micbn&password=change_me&grant_type=password' | jq --raw-output '.access_token' \
+)
+----
+
+[source,bash]
+----
+echo "access_token : $access_token"
+----
+
+[source,bash]
+----
+curl -v -X GET \
+  https://update.jarry.dk:8543/api/users/me \
+  -H "Authorization: Bearer "$access_token
+----
+
+[source,bash]
+----
+curl -v -X GET \
+   https://update.jarry.dk:8543/api/admin \
+   -H "Authorization: Bearer "$access_token
+----
